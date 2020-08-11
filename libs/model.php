@@ -29,11 +29,20 @@ class Model
         }
     }
 
-    private function getMessage($msg = "accion exitosa")
+    public function getMessage($msg = "accion exitosa", $code = 0)
     {
-        $items = [
-            "message" => $msg
-        ];
+        if($code == 1){
+            $items = [
+                "code" => 1,
+                "message" => $msg
+            ];    
+        }else{
+            $items = [
+                "code" => 0,
+                "message" => $msg
+            ];
+        }
+
         return $items;
     }
 
@@ -118,6 +127,19 @@ class Model
             }
         }
         return $columns;
+    }
+
+    public function sqlQuery($q){
+        $items = array();
+        try{
+            $query = $this->db->connect()->query($q);
+            while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                $items[] = $row;
+            }
+        }catch (PDOException $e) {
+            $items = $this->getMessage($e->errorInfo, 1);
+        }
+        return $items;
     }
 
     public function get()

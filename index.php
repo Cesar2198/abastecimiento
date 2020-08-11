@@ -6,6 +6,9 @@
 
     require_once 'config/config.php';
 
+    header("Access-Control-Allow-Origin: *");
+    header('Content-Type: application/json');
+
     // $app = new App();
     $ctrl = isset($_GET["controller"]) ? $_GET["controller"] : null;
     $method = isset($_GET["method"]) ? $_GET["method"] : null;
@@ -28,11 +31,8 @@
                 if (isset($method)) {
                     $rawInput = file_get_contents('php://input');
                     $input = json_decode($rawInput, true);
-                    $query = $input['query'];
-
-                    $output = $result->toArray();
-                     echo $output;
-                   // echo $controller->{$method}();
+                    $query = $input;
+                    echo $controller->{$method}($query);
                 } else {
                     echo $controller->list();
                 }

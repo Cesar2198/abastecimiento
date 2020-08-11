@@ -18,12 +18,19 @@ class Departamento{
         $Departamento = new DepartamentoModel();
         return json_encode($Departamento->get());
     }
-    function create(){
-    
+    function create($request){
+        // var_dump($request);
+        // echo $request["departamento"];
+        $dep = new DepartamentoModel();
+        $result = $dep->create([
+            "departamento" => $request["departamento"],
+            "codigo" => $request["codigo"]
+        ]); 
+        return json_encode($result);
     }
 
     function delete(){
- 
+        
     }
 
     function edit(){
